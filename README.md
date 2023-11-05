@@ -5,9 +5,6 @@ Application for users to track the books they've read, using MongoDB to store bo
 <li>User registration and login with JWT authentication </li> 
 <li>Password encryption using BCrypt </li>
 <li>Role-based authorization with Spring Security </li>
-<li>Customized access denied handling </li>
-<li>Logout mechanism </li>
-<li>Refresh token </li>
 
 ## Technologies
 <li>Spring Boot 3.0 </li>
