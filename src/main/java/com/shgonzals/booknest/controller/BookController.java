@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/book")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "jwtToken")
 @Tag(name = Constants.BOOK_API_DESC, description = Constants.BOOK_API)
 public class BookController {
 
