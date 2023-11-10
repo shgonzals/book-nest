@@ -7,7 +7,6 @@ import java.time.LocalDate;
 @Data
 public class BookRequest {
 
-	private String id;
 	private String title;
 	private String author;
 	private String rate;

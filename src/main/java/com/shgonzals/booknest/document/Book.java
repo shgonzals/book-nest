@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 
@@ -18,6 +19,7 @@ public class Book {
 	private String title;
 	private String author;
 	private String rate;
+	@Field("readDate")
 	private LocalDate readDate;
 	private String shelf;
 }

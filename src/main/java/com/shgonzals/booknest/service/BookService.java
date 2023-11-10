@@ -7,13 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
-	private BookRepository repository;
+	private final BookRepository repository;
 
 	public void insertBook(BookRequest book){
 		var b = Book.builder()
@@ -27,14 +26,15 @@ public class BookService {
 	}
 
 	public void updateBook(BookRequest book){
-		var b = Book.builder()
-					.title(book.getTitle())
-					.author(book.getAuthor())
-					.rate(book.getRate())
-					.readDate(book.getReadDate())
-					.shelf(book.getShelf())
-					.build();
-		repository.save(b);
+		var existingBook = repository.findByTitle(book.getTitle()).orElseThrow();
+		if(existingBook != null){
+			existingBook.setTitle(book.getTitle());
+			existingBook.setAuthor(book.getAuthor());
+			existingBook.setRate(book.getRate());
+			existingBook.setReadDate(book.getReadDate());
+			existingBook.setShelf(book.getShelf());
+		}
+		repository.save(existingBook);
 	}
 
 	public void deleteBook(String title){
