@@ -15,6 +15,7 @@
 	<description>Application for users to track the books they&apos;ve read, Using MongoDB to store book details.</description>
 	<properties>
 		<java.version>17</java.version>
+		<sonar.host.url>http://localhost:9000</sonar.host.url> <!-- Cambia esto con la URL de tu servidor SonarQube -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -93,13 +94,13 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.7.2</version> <!-- o la última versión disponible -->
+			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.7.2</version> <!-- o la última versión disponible -->
+			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -107,7 +108,7 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>3.12.4</version> <!-- o la última versión disponible -->
+			<version>3.12.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -125,6 +126,11 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.11.0.1845</version>
 			</plugin>
 		</plugins>
 	</build>

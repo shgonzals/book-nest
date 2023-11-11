@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -23,43 +24,55 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 
 	public AuthenticationResponse register(RegisterRequest request) {
-		var user = User.builder()
-				.firstname(request.getFirstname())
-				.lastname(request.getLastname())
-				.email(request.getEmail())
-				.password(passwordEncoder.encode(request.getPassword()))
-				.role(Role.USER)
-				.build();
-		repository.save(user);
-		var jwtToken = jwtService.generateToken(user);
-		return AuthenticationResponse.builder()
-				.token(jwtToken).build();
+		if(request != null){
+			var user = User.builder()
+						   .firstname(request.getFirstname())
+						   .lastname(request.getLastname())
+						   .email(request.getEmail())
+						   .password(passwordEncoder.encode(request.getPassword()))
+						   .role(Role.USER)
+						   .build();
+			repository.save(user);
+			var jwtToken = jwtService.generateToken(user);
+			return AuthenticationResponse.builder()
+										 .token(jwtToken).build();
+		}
+		return AuthenticationResponse.builder().build();
 	}
 
 	public AuthenticationResponse authenticate(AuthenticateRequest request) {
-		authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						request.getEmail(),
-						request.getPassword()
-				)
-		);
-		var user = repository.findByEmail(request.getEmail())
-				.orElseThrow();
-		var jwtToken = jwtService.generateToken(user);
-		return AuthenticationResponse.builder()
-									 .token(jwtToken).build();
+		if (request != null){
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							request.getEmail(),
+							request.getPassword()
+					)
+			);
+			var user = repository.findByEmail(request.getEmail())
+								 .orElseThrow(() -> new RuntimeException("user not found: " + request.getEmail()));
+			if(user != null){
+				var jwtToken = jwtService.generateToken(user);
+				return AuthenticationResponse.builder()
+											 .token(jwtToken).build();
+			}
+		}
+		return AuthenticationResponse.builder().build();
 	}
 
 	public void update(UserRequest request){
-		var user = repository.findByEmail(request.getEmail())
-							 .orElseThrow();
-		if(user != null){
-			user.setFirstname(request.getFirstname());
-			user.setLastname(request.getLastname());
-			user.setPassword(request.getPassword());
 
-			repository.save(user);
-		}
+		Objects.requireNonNull(request, "request cannot be null");
+
+		repository.findByEmail(request.getEmail())
+				  .ifPresentOrElse(user -> {
+					  user.setFirstname(request.getFirstname());
+					  user.setLastname(request.getLastname());
+					  user.setPassword(request.getPassword());
+
+					  repository.save(user);
+				  }, () -> {
+					  throw new RuntimeException("User not found: " + request.getEmail());
+				  });
 	}
 
 	public List<User> getAllUsers(){
@@ -67,9 +80,12 @@ public class AuthenticationService {
 	}
 
 	public void delete(String email){
-		var user = repository.findByEmail(email).orElseThrow();
-		if(user != null){
-			repository.delete(user);
+		if (email == null || email.isBlank()) {
+			throw new IllegalArgumentException("email cannot be null or empty");
 		}
+
+		repository.findByEmail(email).ifPresent(user -> {
+			repository.delete(user);
+		});
 	}
 }
