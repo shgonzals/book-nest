@@ -28,7 +28,7 @@ The project uses Maven for dependency management. Here are some key dependencies
 - **Spring Boot Starter Security:** For security features.
 - **Spring Boot Starter Web:** For building web applications.
 - **Lombok:** A library to reduce boilerplate code.
-- **JUnit and Spring Security Test:** For testing.
+- **JUnit5, Mockito and Spring Security Test:** For testing.
 - **JWT (JSON Web Token):** For authentication.
 - **Springdoc OpenAPI Starter Web MVC UI:** For Swagger API documentation.
 
