@@ -2,11 +2,8 @@ package com.shgonzals.booknest.security.user;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
@@ -60,7 +57,7 @@ class UserRepositoryTest {
 
 		//when
 		Optional<User> actualUser = repository.findByEmail(null);
-		
+
 		//then
 		assertTrue(actualUser.isEmpty());
 	}
