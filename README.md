@@ -7,7 +7,7 @@
 
 ## Overview
 
-Book Nest is an application that allows users to track the books they've read. It uses MongoDB to store book details and includes security features with JWT authentication. The project is built with Java 17 and Spring Boot 3.1.5.
+Book Nest is an API that allows users to track the books they've read. It uses MongoDB to store book details and includes security features with JWT authentication. The project is built with Java 17 and Spring Boot 3.1.5.
 
 ## Table of Contents
 
