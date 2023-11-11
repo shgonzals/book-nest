@@ -15,6 +15,7 @@ Book Nest is an application that allows users to track the books they've read. I
 - [Build and Run](#build-and-run)
 - [MongoDB Configuration](#mongodb-configuration)
 - [Swagger API Documentation](#swagger-api-documentation)
+- [Data](#data)
 - [Additional Configuration](#additional-configuration)
 - [Contributing](#contributing)
 - [License](#license)
@@ -67,6 +68,9 @@ The API documentation is generated using Swagger. After starting the application
 ```bash
 http://localhost:8080/swagger-ui/index.html
 ```
+
+## Data
+In the "resources" folder, you can find examples of data to import into MongoDB.
 
 ## Additional Configuration
 If you're using an IDE, make sure to add the following VM option to avoid any issues with the latest Java versions:
