@@ -1,0 +1,1 @@
+{"_id":{"$oid":"654ebaed96e2930e501376d5"},"firstname":"admin","lastname":"admin","email":"admin","password":"$2a$10$pqwJMgH4MHqWvH0RwZGon.62v8WT3cUdh.kkYvQacjuxRIQctJjzO","role":"USER","_class":"com.shgonzals.booknest.security.user.User"}
