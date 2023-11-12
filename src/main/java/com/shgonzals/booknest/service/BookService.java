@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -14,18 +15,22 @@ public class BookService {
 
 	private final BookRepository repository;
 
-	public void insertBook(BookRequest book){
-		var b = Book.builder()
-				.title(book.getTitle())
-				.author(book.getAuthor())
-				.rate(book.getRate())
-				.readDate(book.getReadDate())
-				.shelf(book.getShelf())
-				.build();
-		repository.save(b);
+	public void insertBook(BookRequest request){
+		Objects.requireNonNull(request, "request cannot be null");
+
+		var book = Book.builder()
+						.title(request.getTitle())
+						.author(request.getAuthor())
+						.rate(request.getRate())
+						.readDate(request.getReadDate())
+						.shelf(request.getShelf())
+						.build();
+			repository.save(book);
 	}
 
 	public void updateBook(BookRequest request){
+		Objects.requireNonNull(request, "request cannot be null");
+
 		repository.findByTitle(request.getTitle()).ifPresentOrElse(book -> {
 			book.setTitle(request.getTitle());
 			book.setAuthor(request.getAuthor());
@@ -39,6 +44,8 @@ public class BookService {
 	}
 
 	public void deleteBook(String title){
+		Objects.requireNonNull(title, "title cannot be null");
+
 		repository.findByTitle(title).ifPresentOrElse(book -> {
 			repository.delete(book);
 		}, () -> {
@@ -47,6 +54,7 @@ public class BookService {
 	}
 
 	public List<Book> getBooksByAuthor(String author){
+		Objects.requireNonNull(author, "author cannot be null");
 		return repository.findByAuthor(author);
 	}
 

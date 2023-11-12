@@ -15,7 +15,6 @@
 	<description>Application for users to track the books they&apos;ve read, Using MongoDB to store book details.</description>
 	<properties>
 		<java.version>17</java.version>
-		<sonar.host.url>http://localhost:9000</sonar.host.url> <!-- Cambia esto con la URL de tu servidor SonarQube -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -127,10 +126,34 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- Configuración del plugin JaCoCo -->
 			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.11.0.1845</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version>
+				<configuration>
+					<argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/0.8.7/org.jacoco.agent-0.8.7-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
