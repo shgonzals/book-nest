@@ -8,11 +8,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/book")
@@ -44,7 +47,7 @@ public class BookController {
 	@ApiResponse(responseCode = "404", description = Constants.MESSAGE_404)
 	@ApiResponse(responseCode = "500", description = Constants.MESSAGE_500)
 	@GetMapping("/getAll")
-	private ResponseEntity<List<Book>> getAllBooks(){
+	ResponseEntity<List<Book>> getAllBooks(){
 		return ResponseEntity.ok(service.getAllBooks());
 	}
 
@@ -56,7 +59,7 @@ public class BookController {
 	@ApiResponse(responseCode = "404", description = Constants.MESSAGE_404)
 	@ApiResponse(responseCode = "500", description = Constants.MESSAGE_500)
 	@GetMapping("/getByAuthor")
-	private ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam String author){
+	ResponseEntity<List<Book>> getBooksByAuthor(@RequestParam @NotNull String author){
 		return ResponseEntity.ok(service.getBooksByAuthor(author));
 	}
 
@@ -68,8 +71,10 @@ public class BookController {
 	@ApiResponse(responseCode = "404", description = Constants.MESSAGE_404)
 	@ApiResponse(responseCode = "500", description = Constants.MESSAGE_500)
 	@PostMapping("/create")
-	private ResponseEntity<String> createBook(@RequestBody BookRequest book){
-		service.insertBook(book);
+	ResponseEntity<String> createBook(@RequestBody @NotNull BookRequest request){
+		Objects.requireNonNull(request, "request cannot be null");
+
+		service.insertBook(request);
 		return ResponseEntity.ok("");
 	}
 
@@ -81,7 +86,7 @@ public class BookController {
 	@ApiResponse(responseCode = "404", description = Constants.MESSAGE_404)
 	@ApiResponse(responseCode = "500", description = Constants.MESSAGE_500)
 	@PostMapping("/update")
-	private ResponseEntity<String> updateBook(@RequestBody BookRequest book){
+	ResponseEntity<String> updateBook(@RequestBody @NotNull BookRequest book){
 		service.updateBook(book);
 		return ResponseEntity.ok("");
 	}
@@ -94,7 +99,7 @@ public class BookController {
 	@ApiResponse(responseCode = "404", description = Constants.MESSAGE_404)
 	@ApiResponse(responseCode = "500", description = Constants.MESSAGE_500)
 	@DeleteMapping("/delete")
-	private ResponseEntity<String> deleteBook(@RequestParam String title){
+	ResponseEntity<String> deleteBook(@RequestParam @NotNull String title){
 		service.deleteBook(title);
 		return ResponseEntity.ok("");
 	}
