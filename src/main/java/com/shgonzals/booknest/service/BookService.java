@@ -25,23 +25,25 @@ public class BookService {
 		repository.save(b);
 	}
 
-	public void updateBook(BookRequest book){
-		var existingBook = repository.findByTitle(book.getTitle()).orElseThrow();
-		if(existingBook != null){
-			existingBook.setTitle(book.getTitle());
-			existingBook.setAuthor(book.getAuthor());
-			existingBook.setRate(book.getRate());
-			existingBook.setReadDate(book.getReadDate());
-			existingBook.setShelf(book.getShelf());
-		}
-		repository.save(existingBook);
+	public void updateBook(BookRequest request){
+		repository.findByTitle(request.getTitle()).ifPresentOrElse(book -> {
+			book.setTitle(request.getTitle());
+			book.setAuthor(request.getAuthor());
+			book.setRate(request.getRate());
+			book.setReadDate(request.getReadDate());
+			book.setShelf(request.getShelf());
+			repository.save(book);
+		}, () -> {
+			throw new RuntimeException("book not found: " + request.getTitle());
+		});
 	}
 
 	public void deleteBook(String title){
-		var book = repository.findByTitle(title).orElseThrow();
-		if(book != null){
+		repository.findByTitle(title).ifPresentOrElse(book -> {
 			repository.delete(book);
-		}
+		}, () -> {
+			throw new RuntimeException("book not found: " + title);
+		});
 	}
 
 	public List<Book> getBooksByAuthor(String author){
